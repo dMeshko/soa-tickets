@@ -38,7 +38,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Object register(@Valid RegisterUserViewModel user, BindingResult bindingResult){
+    public Object register(@Valid RegisterUserViewModel user, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors())
             return ErrorMessageHandler.ParseErrors(bindingResult.getFieldErrors());
 
