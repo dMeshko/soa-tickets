@@ -12,7 +12,7 @@ import java.util.List;
 public interface IUsersService {
     List<UserViewModel> getAll();
     UserViewModel getById(Long userId) throws Exception;
-    Long register(RegisterUserViewModel user);
+    Long register(RegisterUserViewModel user) throws Exception;
     Long update(UpdateUserViewModel user);
     Long delete(Long userId) throws Exception;
     UserViewModel findByEmail(String email) throws Exception;

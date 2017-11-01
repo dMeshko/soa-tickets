@@ -28,7 +28,6 @@ public class UsersService implements IUsersService {
         modelMapper = new ModelMapper();
     }
 
-
     @Override
     public List<UserViewModel> getAll() {
         List<UserViewModel> result = new ArrayList<>();
@@ -48,7 +47,10 @@ public class UsersService implements IUsersService {
     }
 
     @Override
-    public Long register(RegisterUserViewModel user) {
+    public Long register(RegisterUserViewModel user) throws Exception {
+        if (userRepository.findByEmail(user.getEmail()) != null)
+            throw new Exception("User already exists!");
+
         User dboUser = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getPhoneNumber());
         return userRepository.save(dboUser).getId();
     }
