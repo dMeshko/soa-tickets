@@ -11,16 +11,16 @@ import java.util.Date;
 public class Event extends BaseEntity {
     private long ownerId;
     private String name;
-    private String descrption;
+    private String description;
     private String location;
     private Date date;
 
     public Event() {}
 
-    public Event(long ownerId, String name, String descrption, String location, Date date) {
+    public Event(long ownerId, String name, String description, String location, Date date) {
         this.ownerId = ownerId;
         this.name = name;
-        this.descrption = descrption;
+        this.description = description;
         this.location = location;
         this.date = date;
     }
@@ -37,12 +37,12 @@ public class Event extends BaseEntity {
         this.name = name;
     }
 
-    public String getDescrption() {
-        return descrption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrption(String descrption) {
-        this.descrption = descrption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLocation() {

@@ -1,14 +1,12 @@
 package finki.ukim.mk.soatickets.business.view.models.events;
 
-import java.util.Date;
-
 public class EventViewModel {
     private long id;
     private long ownerId;
     private String name;
-    private String descrption;
+    private String description;
     private String location;
-    private Date date;
+    private String date;
 
     public long getId() {
         return id;
@@ -34,12 +32,12 @@ public class EventViewModel {
         this.name = name;
     }
 
-    public String getDescrption() {
-        return descrption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrption(String descrption) {
-        this.descrption = descrption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLocation() {
@@ -50,11 +48,11 @@ public class EventViewModel {
         this.location = location;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

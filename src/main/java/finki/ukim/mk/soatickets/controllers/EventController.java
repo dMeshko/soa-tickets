@@ -9,10 +9,7 @@ import finki.ukim.mk.soatickets.controllers.helpers.ErrorMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
@@ -38,36 +35,36 @@ public class EventController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Object create(@Valid CreateEventViewModel event, BindingResult bindingResult) {
+    public Object create(@Valid CreateEventViewModel event, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors())
             return ErrorMessageHandler.ParseErrors(bindingResult.getFieldErrors());
         return eventService.create(event);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public Object update(@Valid UpdateEventViewModel event, BindingResult bindingResult) {
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Object update(@Valid UpdateEventViewModel event, BindingResult bindingResult) throws Exception {
         if(bindingResult.hasErrors())
             return ErrorMessageHandler.ParseErrors(bindingResult.getFieldErrors());
         return eventService.update(event);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    public Long delete(@PathParam("id") Long id) throws Exception {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Long delete(@PathVariable Long id) throws Exception {
         return eventService.delete(id);
     }
 
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
     public List<EventViewModel> getByName(@PathVariable String name) throws Exception {
         return eventService.findAllByName(name);
     }
 
-    @RequestMapping(value = "/{location}", method = RequestMethod.GET)
+    @RequestMapping(value = "/location/{location}", method = RequestMethod.GET)
     public List<EventViewModel> getByLocation(@PathVariable String location) throws Exception {
         return eventService.findAllByLocation(location);
     }
 
-    @RequestMapping(value = "/{date}", method = RequestMethod.GET)
-    public List<EventViewModel> byName(@PathVariable Date date) throws Exception {
+    @RequestMapping(value = "/date/{date}", method = RequestMethod.GET)
+    public List<EventViewModel> byName(@PathVariable String date) throws Exception {
         return eventService.findAllByDate(date);
     }
 

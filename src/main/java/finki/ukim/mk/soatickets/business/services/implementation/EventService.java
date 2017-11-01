@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +28,15 @@ public class EventService implements IEventService {
 
     @Override
     public List<EventViewModel> getAll() {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         List<EventViewModel> result = new ArrayList<>();
-        for (Event event : eventRepository.findAll())
-            result.add(modelMapper.map(event, EventViewModel.class));
+        for (Event event : eventRepository.findAll()){
+            EventViewModel viewModel = modelMapper.map(event, EventViewModel.class);
+            viewModel.setDate(dateFormat.format(event.getDate()));
+            result.add(viewModel);
+        }
+
 
         return result;
     }
@@ -36,30 +44,43 @@ public class EventService implements IEventService {
     @Override
     public EventViewModel getById(Long eventId) throws Exception {
         Event result = eventRepository.findOne(eventId);
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         if(result == null) {
             throw new Exception("There is no such event!");
         }
-        return modelMapper.map(result, EventViewModel.class);
+        EventViewModel viewModel = modelMapper.map(result, EventViewModel.class);
+        viewModel.setDate(dateFormat.format(result.getDate()));
+        return viewModel;
     }
 
     @Override
-    public Long create(CreateEventViewModel event) {
+    public Long create(CreateEventViewModel event) throws Exception {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date eventDate = dateFormat.parse(event.getDate());
+        if (eventDate.compareTo(new Date()) < 0)
+            throw new Exception("The event can't be in the past.");
+
         Event eventDbo = new Event(event.getOwnerId(),
                                    event.getName(),
-                                   event.getDescrption(),
+                                   event.getDescription(),
                                    event.getLocation(),
-                                   event.getDate());
+                                   eventDate);
         return eventRepository.save(eventDbo).getId();
     }
 
     @Override
-    public Long update(UpdateEventViewModel event) {
+    public Long update(UpdateEventViewModel event) throws Exception {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date eventDate = dateFormat.parse(event.getDate());
+        if (eventDate.compareTo(new Date()) < 0)
+            throw new Exception("The event can't be in the past.");
+
         Event dboEvent = eventRepository.findOne(event.getId());
         dboEvent.setName(event.getName());
-        dboEvent.setDescrption(event.getDescrption());
+        dboEvent.setDescription(event.getDescription());
         dboEvent.setLocation(event.getLocation());
-        dboEvent.setDate(event.getDate());
+        dboEvent.setDate(eventDate);
 
         return eventRepository.save(dboEvent).getId();
     }
@@ -77,30 +98,42 @@ public class EventService implements IEventService {
 
     @Override
     public List<EventViewModel> findAllByName(String name) throws Exception {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         List<EventViewModel> result = new ArrayList<>();
         List<Event> dboEvents = eventRepository.findAllByName(name);
         for(Event event : dboEvents) {
-            result.add(modelMapper.map(event, EventViewModel.class));
+            EventViewModel viewModel = modelMapper.map(event, EventViewModel.class);
+            viewModel.setDate(dateFormat.format(event.getDate()));
+            result.add(viewModel);
         }
         return result;
     }
 
     @Override
-    public List<EventViewModel> findAllByDate(Date date) throws Exception {
+    public List<EventViewModel> findAllByDate(String date) throws Exception {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         List<EventViewModel> result = new ArrayList<>();
-        List<Event> dboEvents = eventRepository.findAllByDate(date);
+        List<Event> dboEvents = eventRepository.findAllByDate(dateFormat.parse(date));
         for(Event event : dboEvents) {
-            result.add(modelMapper.map(event, EventViewModel.class));
+            EventViewModel viewModel = modelMapper.map(event, EventViewModel.class);
+            viewModel.setDate(dateFormat.format(event.getDate()));
+            result.add(viewModel);
         }
         return result;
     }
 
     @Override
     public List<EventViewModel> findAllByLocation(String location) throws Exception {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         List<EventViewModel> result = new ArrayList<>();
         List<Event> dboEvents = eventRepository.findAllByLocation(location);
         for(Event event : dboEvents) {
-            result.add(modelMapper.map(event, EventViewModel.class));
+            EventViewModel viewModel = modelMapper.map(event, EventViewModel.class);
+            viewModel.setDate(dateFormat.format(event.getDate()));
+            result.add(viewModel);
         }
         return result;
     }

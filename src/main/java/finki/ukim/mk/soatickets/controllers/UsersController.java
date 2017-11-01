@@ -53,8 +53,8 @@ public class UsersController {
         return usersService.update(user);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    public Long delete(@PathParam("id") Long id) throws Exception {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Long delete(@PathVariable Long id) throws Exception {
         return usersService.delete(id);
     }
 

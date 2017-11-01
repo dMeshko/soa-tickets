@@ -3,10 +3,8 @@ package finki.ukim.mk.soatickets.business.view.models.events;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 public class CreateEventViewModel {
-
     private long ownerId;
 
     @NotEmpty
@@ -15,14 +13,14 @@ public class CreateEventViewModel {
 
     @NotEmpty
     @Size(min = 10)
-    private String descrption;
+    private String description;
 
     @NotEmpty
     @Size(min = 5)
     private String location;
 
     @NotEmpty
-    private Date date;
+    private String date;
 
     public long getOwnerId() {
         return ownerId;
@@ -40,12 +38,12 @@ public class CreateEventViewModel {
         this.name = name;
     }
 
-    public String getDescrption() {
-        return descrption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrption(String descrption) {
-        this.descrption = descrption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLocation() {
@@ -56,11 +54,11 @@ public class CreateEventViewModel {
         this.location = location;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }
