@@ -44,7 +44,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public Long register(CreateEventViewModel event) {
+    public Long create(CreateEventViewModel event) {
         Event eventDbo = new Event(event.getOwnerId(),
                                    event.getName(),
                                    event.getDescrption(),
@@ -76,17 +76,32 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public EventViewModel findByName(String name) throws Exception {
-        return null;
+    public List<EventViewModel> findAllByName(String name) throws Exception {
+        List<EventViewModel> result = new ArrayList<>();
+        List<Event> dboEvents = eventRepository.findAllByName(name);
+        for(Event event : dboEvents) {
+            result.add(modelMapper.map(event, EventViewModel.class));
+        }
+        return result;
     }
 
     @Override
-    public EventViewModel findByDate(Date date) throws Exception {
-        return null;
+    public List<EventViewModel> findAllByDate(Date date) throws Exception {
+        List<EventViewModel> result = new ArrayList<>();
+        List<Event> dboEvents = eventRepository.findAllByDate(date);
+        for(Event event : dboEvents) {
+            result.add(modelMapper.map(event, EventViewModel.class));
+        }
+        return result;
     }
 
     @Override
-    public EventViewModel findByLocation(String location) throws Exception {
-        return null;
+    public List<EventViewModel> findAllByLocation(String location) throws Exception {
+        List<EventViewModel> result = new ArrayList<>();
+        List<Event> dboEvents = eventRepository.findAllByLocation(location);
+        for(Event event : dboEvents) {
+            result.add(modelMapper.map(event, EventViewModel.class));
+        }
+        return result;
     }
 }

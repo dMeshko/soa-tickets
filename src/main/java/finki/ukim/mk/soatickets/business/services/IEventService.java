@@ -10,10 +10,10 @@ import java.util.List;
 public interface IEventService {
     List<EventViewModel> getAll();
     EventViewModel getById(Long eventId) throws Exception;
-    Long register(CreateEventViewModel event);
+    Long create(CreateEventViewModel event);
     Long update(UpdateEventViewModel event);
     Long delete(Long eventId) throws Exception;
-    EventViewModel findByName(String name) throws Exception;
-    EventViewModel findByDate(Date date) throws Exception;
-    EventViewModel findByLocation(String location) throws Exception;
+    List<EventViewModel> findAllByName(String name) throws Exception;
+    List<EventViewModel> findAllByDate(Date date) throws Exception;
+    List<EventViewModel> findAllByLocation(String location) throws Exception;
 }
