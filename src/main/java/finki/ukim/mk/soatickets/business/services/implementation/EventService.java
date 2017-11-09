@@ -5,7 +5,9 @@ import finki.ukim.mk.soatickets.business.view.models.events.CreateEventViewModel
 import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.events.UpdateEventViewModel;
 import finki.ukim.mk.soatickets.models.events.Event;
+import finki.ukim.mk.soatickets.models.user.User;
 import finki.ukim.mk.soatickets.repositories.IEventRepository;
+import finki.ukim.mk.soatickets.repositories.IUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ public class EventService implements IEventService {
 
     @Autowired
     private IEventRepository eventRepository;
+    @Autowired
+    private IUserRepository userRepository;
 
     private ModelMapper modelMapper;
 
@@ -61,7 +65,11 @@ public class EventService implements IEventService {
         if (eventDate.compareTo(new Date()) < 0)
             throw new Exception("The event can't be in the past.");
 
-        Event eventDbo = new Event(event.getOwnerId(),
+        User owner = userRepository.findOne(event.getOwnerId());
+        if (owner == null)
+            throw new Exception("Owner not found!");
+
+        Event eventDbo = new Event(owner,
                                    event.getName(),
                                    event.getDescription(),
                                    event.getLocation(),
