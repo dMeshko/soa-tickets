@@ -1,6 +1,7 @@
 package finki.ukim.mk.soatickets.models.user;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
+import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
 
 import javax.persistence.*;
@@ -21,6 +22,9 @@ public class User extends BaseEntity {
     private String phoneNumber;
     private boolean isActive;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Event> ownedEvents;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoughtTicket> boughtTickets;
 
@@ -34,6 +38,7 @@ public class User extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.isActive = true;
         this.boughtTickets = new ArrayList<>();
+        this.ownedEvents = new ArrayList<>();
     }
 
     @Override
@@ -95,5 +100,13 @@ public class User extends BaseEntity {
 
     public void setBoughtTickets(List<BoughtTicket> boughtTickets) {
         this.boughtTickets = boughtTickets;
+    }
+
+    public List<Event> getOwnedEvents() {
+        return ownedEvents;
+    }
+
+    public void setOwnedEvents(List<Event> ownedEvents) {
+        this.ownedEvents = ownedEvents;
     }
 }

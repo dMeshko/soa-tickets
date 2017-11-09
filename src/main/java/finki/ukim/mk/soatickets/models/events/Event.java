@@ -4,10 +4,7 @@ import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.tickets.Ticket;
 import finki.ukim.mk.soatickets.models.user.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "events")
 public class Event extends BaseEntity {
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
     private String name;
     private String description;

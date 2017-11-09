@@ -1,29 +1,30 @@
 package finki.ukim.mk.soatickets.models.tickets;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
-import finki.ukim.mk.soatickets.models.user.Invoice;
 import finki.ukim.mk.soatickets.models.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "bought_tickets")
 public class BoughtTicket extends BaseEntity {
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket;
-    private Invoice invoice;
 
-    protected BoughtTicket() {}
+    private Date purchasedOn;
 
-    public BoughtTicket(User user, Ticket ticket, Invoice invoice) {
+    protected BoughtTicket() {
+        purchasedOn = new Date();
+    }
+
+    public BoughtTicket(User user, Ticket ticket) {
         this.user = user;
         this.ticket = ticket;
-        this.invoice = invoice;
     }
 
     public User getUser() {
@@ -40,13 +41,5 @@ public class BoughtTicket extends BaseEntity {
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
-    }
-
-    public Invoice getInvoice() {
-        return invoice;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
     }
 }
