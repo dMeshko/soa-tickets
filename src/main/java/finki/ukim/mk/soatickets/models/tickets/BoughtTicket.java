@@ -1,6 +1,7 @@
 package finki.ukim.mk.soatickets.models.tickets;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
+import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.user.User;
 
 import javax.persistence.*;
@@ -15,6 +16,10 @@ public class BoughtTicket extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
 
     private Date purchasedOn;
 
