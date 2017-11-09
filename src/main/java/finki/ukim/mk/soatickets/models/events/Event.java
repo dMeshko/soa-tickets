@@ -1,33 +1,45 @@
 package finki.ukim.mk.soatickets.models.events;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
+import finki.ukim.mk.soatickets.models.tickets.Ticket;
+import finki.ukim.mk.soatickets.models.user.User;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.security.acl.Owner;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
 public class Event extends BaseEntity {
-    private long ownerId;
+    private User owner;
     private String name;
     private String description;
     private String location;
     private Date date;
 
-    public Event() {}
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
 
-    public Event(long ownerId, String name, String description, String location, Date date) {
-        this.ownerId = ownerId;
+    protected Event() {}
+
+    public Event(User owner, String name, String description, String location, Date date) {
+        this.owner = owner;
         this.name = name;
         this.description = description;
         this.location = location;
         this.date = date;
+
+        this.tickets = new ArrayList<>();
     }
 
-    public long getOwnerId() { return ownerId; }
+    public User getOwner() { return owner; }
 
-    public void setOwnerId() { this.ownerId = ownerId; }
+    public void setOwner(User owner) { this.owner = owner; }
 
     public String getName() {
         return name;
@@ -59,5 +71,13 @@ public class Event extends BaseEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 }
