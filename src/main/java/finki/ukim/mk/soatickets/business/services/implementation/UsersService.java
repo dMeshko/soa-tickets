@@ -8,19 +8,27 @@ import finki.ukim.mk.soatickets.models.user.User;
 import finki.ukim.mk.soatickets.repositories.IUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Created by DarkoM on 22.10.2017.
  */
 
 @Service
-public class UsersService implements IUsersService {
+public class UsersService implements IUsersService, UserDetailsService {
     @Autowired
     private IUserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private ModelMapper modelMapper;
 
@@ -51,7 +59,8 @@ public class UsersService implements IUsersService {
         if (userRepository.findByEmail(user.getEmail()) != null)
             throw new Exception("User already exists!");
 
-        User dboUser = new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getPhoneNumber());
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        User dboUser = new User(user.getFirstName(), user.getLastName(), user.getEmail(), encodedPassword, user.getPhoneNumber());
         return userRepository.save(dboUser).getId();
     }
 
@@ -85,5 +94,22 @@ public class UsersService implements IUsersService {
             throw new Exception("There is no user associated with that email!");
 
         return modelMapper.map(user, UserViewModel.class);
+    }
+
+
+    /**
+     * We are not supporting the concept of logging in by username, so that's why everywhere You're about to see username, we're using the email instead.
+     * @param s (should be username, but since it's not supported by this app, what this really is an email)
+     * @return UserDetails if the user is successfully authenticated, exception is thrown otherwise
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(s);
+        if (user == null) {
+            throw new UsernameNotFoundException(s);
+        }
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), emptyList());
     }
 }
