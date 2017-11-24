@@ -20,7 +20,7 @@ import static finki.ukim.mk.soatickets.core.Constants.SIGN_UP_URL;
  * Created by DarkoM on 24.11.2017.
  */
 
-@EnableWebSecurity
+//@EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     private UsersService usersService;
