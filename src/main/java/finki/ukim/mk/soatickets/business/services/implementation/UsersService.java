@@ -6,8 +6,12 @@ import finki.ukim.mk.soatickets.business.view.models.user.UpdateUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
 import finki.ukim.mk.soatickets.models.user.User;
 import finki.ukim.mk.soatickets.repositories.IUserRepository;
+import finki.ukim.mk.soatickets.sts.AuthenticatedUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -110,6 +114,6 @@ public class UsersService implements IUsersService, UserDetailsService {
             throw new UsernameNotFoundException(s);
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), emptyList());
+        return new AuthenticatedUser(user);
     }
 }

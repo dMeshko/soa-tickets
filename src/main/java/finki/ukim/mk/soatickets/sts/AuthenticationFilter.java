@@ -1,6 +1,9 @@
 package finki.ukim.mk.soatickets.sts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import finki.ukim.mk.soatickets.business.services.IUsersService;
+import finki.ukim.mk.soatickets.repositories.IUserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import finki.ukim.mk.soatickets.models.user.User;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -17,8 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 import static finki.ukim.mk.soatickets.core.Constants.EXPIRATION_TIME;
 import static finki.ukim.mk.soatickets.core.Constants.HEADER_STRING;
@@ -46,7 +49,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                     new UsernamePasswordAuthenticationToken(
                             creds.getEmail(),
                             creds.getPassword(),
-                            new ArrayList<>())
+                            creds.getClaims())
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,11 +62,26 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
+        AuthenticatedUser user = ((AuthenticatedUser) auth.getPrincipal());
+
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put("userId", user.getId());
+        claims.put("roles", user.getRoles());
+        claims.put("authorities", user.getAuthorities());
+
         String token = Jwts.builder()
-                .setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+                .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) {
+
+        // see comments in Servlet API around using sendError as an alternative
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }
