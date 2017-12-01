@@ -3,10 +3,14 @@ package finki.ukim.mk.soatickets.models.user;
 import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by DarkoM on 22.10.2017.
@@ -28,7 +32,17 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoughtTicket> boughtTickets;
 
-    protected User(){}
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
+
+    protected User(){
+        this.roles = new ArrayList<>();
+    }
 
     public User(String firstName, String lastName, String email, String password, String phoneNumber){
         this.firstName = firstName;
@@ -39,6 +53,7 @@ public class User extends BaseEntity {
         this.isActive = true;
         this.boughtTickets = new ArrayList<>();
         this.ownedEvents = new ArrayList<>();
+        this.roles = new ArrayList<>();
     }
 
     @Override
@@ -108,5 +123,21 @@ public class User extends BaseEntity {
 
     public void setOwnedEvents(List<Event> ownedEvents) {
         this.ownedEvents = ownedEvents;
+    }
+
+    public List<String> getRoles() {
+        List<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toList());
+
+        return roleNames;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<GrantedAuthority> getClaims(){
+        List<GrantedAuthority> claims = roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+
+        return claims;
     }
 }

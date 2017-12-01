@@ -7,6 +7,8 @@ import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
 import finki.ukim.mk.soatickets.controllers.helpers.ErrorMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -28,7 +31,9 @@ public class UsersController {
     private IUsersService usersService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<UserViewModel> getAllUsers() {
+    @PreAuthorize("hasAnyRole('admin')")
+    public List<UserViewModel> getAllUsers(Principal principal) {
+        System.out.println(principal.toString());
         return usersService.getAll();
     }
 
