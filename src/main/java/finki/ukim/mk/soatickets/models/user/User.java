@@ -4,6 +4,9 @@ import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
 import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -15,18 +18,26 @@ import java.util.stream.Collectors;
 /**
  * Created by DarkoM on 22.10.2017.
  */
+
+@Indexed
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
+    @Field
     private String firstName;
+    @Field
     private String lastName;
+
     private String password;
     @Column(unique = true)
+    @Field
     private String email;
+    @Field
     private String phoneNumber;
     private boolean isActive;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @IndexedEmbedded
     private List<Event> ownedEvents;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

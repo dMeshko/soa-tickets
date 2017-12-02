@@ -3,6 +3,7 @@ package finki.ukim.mk.soatickets.models.events;
 import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.tickets.Ticket;
 import finki.ukim.mk.soatickets.models.user.User;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import java.security.acl.Owner;
@@ -10,18 +11,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Indexed
 @Entity
 @Table(name = "events")
 public class Event extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
+
+    @Field
     private String name;
+
+    @Field
     private String description;
+
+    @Field
     private String location;
+
+    @DateBridge(resolution = Resolution.DAY)
+    @Field(analyze = Analyze.NO, store = Store.YES)
     private Date date;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @IndexedEmbedded // after this u search on tickets.price
     private List<Ticket> tickets;
 
     protected Event() {}

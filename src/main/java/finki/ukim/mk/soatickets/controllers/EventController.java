@@ -2,6 +2,7 @@ package finki.ukim.mk.soatickets.controllers;
 
 
 import finki.ukim.mk.soatickets.business.services.IEventService;
+import finki.ukim.mk.soatickets.business.services.ISearchService;
 import finki.ukim.mk.soatickets.business.view.models.events.CreateEventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.events.UpdateEventViewModel;
@@ -12,9 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,6 +21,9 @@ public class EventController {
 
     @Autowired
     private IEventService eventService;
+
+    @Autowired
+    private ISearchService searchService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<EventViewModel> getAllEvents() {
@@ -68,4 +69,8 @@ public class EventController {
         return eventService.findAllByDate(date);
     }
 
+    @RequestMapping(value = "/search/{term}", method = RequestMethod.GET)
+    public List<EventViewModel> search(@PathVariable String term) throws Exception {
+        return searchService.searchEvents(term);
+    }
 }

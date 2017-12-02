@@ -1,6 +1,8 @@
 package finki.ukim.mk.soatickets.controllers;
 
+import finki.ukim.mk.soatickets.business.services.ISearchService;
 import finki.ukim.mk.soatickets.business.services.IUsersService;
+import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.RegisterUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UpdateUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
@@ -29,6 +31,9 @@ import java.util.List;
 public class UsersController {
     @Autowired
     private IUsersService usersService;
+
+    @Autowired
+    private ISearchService searchService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('admin')")
@@ -66,5 +71,10 @@ public class UsersController {
     @RequestMapping(value = "/email/{email:.+}", method = RequestMethod.GET)
     public UserViewModel getUserByEmail(@PathVariable String email) throws Exception {
         return usersService.findByEmail(email);
+    }
+
+    @RequestMapping(value = "/search/{term}", method = RequestMethod.GET)
+    public List<UserViewModel> search(@PathVariable String term) throws Exception {
+        return searchService.searchUsers(term);
     }
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.events.Event;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -18,6 +19,7 @@ public class Ticket extends BaseEntity {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
+    @Field
     private int price;
 
     protected Ticket() { }
