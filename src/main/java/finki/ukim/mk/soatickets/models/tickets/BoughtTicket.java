@@ -49,4 +49,20 @@ public class BoughtTicket extends BaseEntity {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public Date getPurchasedOn() {
+        return purchasedOn;
+    }
+
+    public void setPurchasedOn(Date purchasedOn) {
+        this.purchasedOn = purchasedOn;
+    }
 }

@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface IBoughtTicketRepository extends CrudRepository<BoughtTicket, Long> {
-    public List<BoughtTicket> findByEvent(long eventId);
+    List<BoughtTicket> findByEvent(long eventId);
 }

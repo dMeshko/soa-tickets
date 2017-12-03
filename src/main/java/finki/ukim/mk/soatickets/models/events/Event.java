@@ -1,6 +1,7 @@
 package finki.ukim.mk.soatickets.models.events;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
+import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
 import finki.ukim.mk.soatickets.models.tickets.Ticket;
 import finki.ukim.mk.soatickets.models.user.User;
 import org.hibernate.search.annotations.*;
@@ -35,6 +36,9 @@ public class Event extends BaseEntity {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<BoughtTicket> boughtTickets;
+
     protected Event() {}
 
     public Event(User owner, String name, String description, String location, Date date) {
@@ -45,6 +49,7 @@ public class Event extends BaseEntity {
         this.date = date;
 
         this.tickets = new ArrayList<>();
+        this.boughtTickets = new ArrayList<>();
     }
 
     public User getOwner() { return owner; }
@@ -89,5 +94,13 @@ public class Event extends BaseEntity {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public List<BoughtTicket> getBoughtTickets() {
+        return boughtTickets;
+    }
+
+    public void setBoughtTickets(List<BoughtTicket> boughtTickets) {
+        this.boughtTickets = boughtTickets;
     }
 }

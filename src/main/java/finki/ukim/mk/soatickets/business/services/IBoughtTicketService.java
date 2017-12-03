@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IBoughtTicketService {
     public List<BoughtTicketViewModel> getAllForUser(long userId) throws Exception;
-    public List<BoughtTicketViewModel> getAllForEvent(long eventId);
+    public List<BoughtTicketViewModel> getAllForEvent(long eventId) throws Exception;
 }

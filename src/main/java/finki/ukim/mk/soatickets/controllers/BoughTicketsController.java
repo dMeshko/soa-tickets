@@ -20,7 +20,7 @@ public class BoughTicketsController {
     private BoughtTicketService service;
 
     @RequestMapping(value = "/event/{id}", method = RequestMethod.GET)
-    private List<BoughtTicketViewModel> getBoughtTicketsForEvent(@PathVariable long id) {
+    private List<BoughtTicketViewModel> getBoughtTicketsForEvent(@PathVariable long id) throws Exception {
         return service.getAllForEvent(id);
     }
 

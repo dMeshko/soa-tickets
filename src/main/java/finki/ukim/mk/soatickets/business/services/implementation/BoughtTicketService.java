@@ -1,7 +1,11 @@
 package finki.ukim.mk.soatickets.business.services.implementation;
 
 import finki.ukim.mk.soatickets.business.services.IBoughtTicketService;
+import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.tickets.BoughtTicketViewModel;
+import finki.ukim.mk.soatickets.business.view.models.tickets.TicketViewModel;
+import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
+import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
 import finki.ukim.mk.soatickets.models.user.User;
 import finki.ukim.mk.soatickets.repositories.IBoughtTicketRepository;
@@ -40,17 +44,30 @@ public class BoughtTicketService implements IBoughtTicketService {
         }
         List<BoughtTicketViewModel> result = new ArrayList<>();
         for (BoughtTicket boughtTicket : user.getBoughtTickets()) {
-            result.add(mapper.map(boughtTicket, BoughtTicketViewModel.class));
+            BoughtTicketViewModel boughtTicketViewModel = mapper.map(boughtTicket, BoughtTicketViewModel.class);
+            boughtTicketViewModel.setOwner(mapper.map(boughtTicket.getUser(), UserViewModel.class));
+            boughtTicketViewModel.setEvent(mapper.map(boughtTicket.getTicket().getEvent(), EventViewModel.class));
+            result.add(boughtTicketViewModel);
         }
         return result;
     }
 
     @Override
-    public List<BoughtTicketViewModel> getAllForEvent(long eventId) {
+    public List<BoughtTicketViewModel> getAllForEvent(long eventId) throws Exception {
         List<BoughtTicketViewModel> result = new ArrayList<>();
-        for (BoughtTicket boughtTicket : boughtTicketRepository.findByEvent(eventId)) {
-            result.add(mapper.map(boughtTicket, BoughtTicketViewModel.class));
+
+        Event event = eventRepository.findOne(eventId);
+        if (event == null)
+            throw new Exception("Event not found!");
+
+        List<BoughtTicket> boughtTickets = event.getBoughtTickets();
+        for (BoughtTicket boughtTicket : boughtTickets) {
+            BoughtTicketViewModel boughtTicketViewModel = mapper.map(boughtTicket, BoughtTicketViewModel.class);
+            boughtTicketViewModel.setOwner(mapper.map(boughtTicket.getUser(), UserViewModel.class));
+            boughtTicketViewModel.setEvent(mapper.map(boughtTicket.getTicket().getEvent(), EventViewModel.class));
+            result.add(boughtTicketViewModel);
         }
+
         return result;
     }
 }
