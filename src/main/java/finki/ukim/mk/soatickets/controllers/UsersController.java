@@ -2,14 +2,12 @@ package finki.ukim.mk.soatickets.controllers;
 
 import finki.ukim.mk.soatickets.business.services.ISearchService;
 import finki.ukim.mk.soatickets.business.services.IUsersService;
-import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.RegisterUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UpdateUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
-import finki.ukim.mk.soatickets.controllers.helpers.ErrorMessageHandler;
+import finki.ukim.mk.soatickets.core.helpers.ErrorMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.security.Principal;
 import java.util.List;
 

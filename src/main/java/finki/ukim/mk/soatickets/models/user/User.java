@@ -3,6 +3,7 @@ package finki.ukim.mk.soatickets.models.user;
 import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
+import finki.ukim.mk.soatickets.models.tickets.Invoice;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -42,6 +43,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoughtTicket> boughtTickets;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -146,9 +150,21 @@ public class User extends BaseEntity {
         this.roles = roles;
     }
 
+    public void addRole(Role role){
+        this.roles.add(role);
+    }
+
     public List<GrantedAuthority> getClaims(){
         List<GrantedAuthority> claims = roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 
         return claims;
+    }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
 }

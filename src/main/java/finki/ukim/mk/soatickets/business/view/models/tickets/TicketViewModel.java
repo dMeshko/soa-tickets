@@ -7,6 +7,7 @@ public class TicketViewModel {
 
     private long id;
     private EventViewModel event;
+    private float price;
 
     public void setId(long id) {
         this.id = id;
@@ -22,5 +23,13 @@ public class TicketViewModel {
 
     public void setEvent(EventViewModel event) {
         this.event = event;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }

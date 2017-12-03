@@ -30,6 +30,8 @@ public class BoughtTicket extends BaseEntity {
     public BoughtTicket(User user, Ticket ticket) {
         this.user = user;
         this.ticket = ticket;
+        this.event = ticket.getEvent();
+        this.purchasedOn = new Date();
     }
 
     public User getUser() {

@@ -19,12 +19,11 @@ public class Ticket extends BaseEntity {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Field
-    private int price;
+    private float price;
 
     protected Ticket() { }
 
-    public Ticket(Event event, int price) {
+    public Ticket(Event event, float price) {
         this.event = event;
         this.price = price;
     }
@@ -37,11 +36,11 @@ public class Ticket extends BaseEntity {
         this.event = event;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 }

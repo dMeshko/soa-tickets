@@ -33,7 +33,6 @@ public class Event extends BaseEntity {
     private Date date;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    @IndexedEmbedded // after this u search on tickets.price
     private List<Ticket> tickets;
 
     protected Event() {}

@@ -4,7 +4,9 @@ import finki.ukim.mk.soatickets.business.services.IUsersService;
 import finki.ukim.mk.soatickets.business.view.models.user.RegisterUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UpdateUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
+import finki.ukim.mk.soatickets.models.user.Role;
 import finki.ukim.mk.soatickets.models.user.User;
+import finki.ukim.mk.soatickets.repositories.IRoleRepository;
 import finki.ukim.mk.soatickets.repositories.IUserRepository;
 import finki.ukim.mk.soatickets.sts.AuthenticatedUser;
 import org.modelmapper.ModelMapper;
@@ -33,6 +35,9 @@ public class UsersService implements IUsersService, UserDetailsService {
     private IUserRepository userRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private IRoleRepository roleRepository;
 
     private ModelMapper modelMapper;
 
@@ -65,6 +70,15 @@ public class UsersService implements IUsersService, UserDetailsService {
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         User dboUser = new User(user.getFirstName(), user.getLastName(), user.getEmail(), encodedPassword, user.getPhoneNumber());
+
+        Role standardUserRole = roleRepository.findByName("user");
+        if (standardUserRole == null){
+            standardUserRole = new Role("user");
+            roleRepository.save(standardUserRole);
+        }
+
+        dboUser.addRole(standardUserRole);
+
         return userRepository.save(dboUser).getId();
     }
 

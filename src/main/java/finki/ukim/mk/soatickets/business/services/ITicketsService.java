@@ -1,5 +1,6 @@
 package finki.ukim.mk.soatickets.business.services;
 
+import finki.ukim.mk.soatickets.business.view.models.tickets.PurchaseTicketViewModel;
 import finki.ukim.mk.soatickets.business.view.models.tickets.TicketViewModel;
 import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.tickets.Ticket;
@@ -12,4 +13,5 @@ public interface ITicketsService {
     long createTicketForEvent(long eventId, int price) throws Exception;
     long removeTicketsForEvent(long eventId) throws Exception;
     long updatePriceForEvent(long eventId, int price) throws Exception;
+    long purchaseTicket(PurchaseTicketViewModel model) throws Exception;
 }

@@ -1,4 +1,4 @@
-package finki.ukim.mk.soatickets.controllers.helpers;
+package finki.ukim.mk.soatickets.core.helpers;
 
 import org.springframework.validation.FieldError;
 

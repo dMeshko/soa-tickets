@@ -6,7 +6,7 @@ import finki.ukim.mk.soatickets.business.services.ISearchService;
 import finki.ukim.mk.soatickets.business.view.models.events.CreateEventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.events.UpdateEventViewModel;
-import finki.ukim.mk.soatickets.controllers.helpers.ErrorMessageHandler;
+import finki.ukim.mk.soatickets.core.helpers.ErrorMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
