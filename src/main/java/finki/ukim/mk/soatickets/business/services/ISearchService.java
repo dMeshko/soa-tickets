@@ -1,5 +1,6 @@
 package finki.ukim.mk.soatickets.business.services;
 
+import finki.ukim.mk.soatickets.business.view.models.blog.PostViewModel;
 import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
 
@@ -12,4 +13,5 @@ import java.util.List;
 public interface ISearchService {
     List<EventViewModel> searchEvents(String searchTerm);
     List<UserViewModel> searchUsers(String searchTerm);
+    List<PostViewModel> searchPosts(String searchTerm);
 }
