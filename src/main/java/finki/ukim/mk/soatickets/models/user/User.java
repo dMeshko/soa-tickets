@@ -51,6 +51,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "userTo", cascade = CascadeType.ALL)
+    private List<Notification> receivedNotifications;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -64,6 +67,7 @@ public class User extends BaseEntity {
         this.ownedEvents = new ArrayList<>();
         this.roles = new ArrayList<>();
         this.posts = new ArrayList<>();
+        this.receivedNotifications = new ArrayList<>();
     }
 
     public User(String firstName, String lastName, String email, String password, String phoneNumber){
@@ -77,6 +81,7 @@ public class User extends BaseEntity {
         this.ownedEvents = new ArrayList<>();
         this.roles = new ArrayList<>();
         this.posts = new ArrayList<>();
+        this.receivedNotifications = new ArrayList<>();
     }
 
     @Override
@@ -182,5 +187,13 @@ public class User extends BaseEntity {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public List<Notification> getReceivedNotifications() {
+        return receivedNotifications;
+    }
+
+    public void setReceivedNotifications(List<Notification> receivedNotifications) {
+        this.receivedNotifications = receivedNotifications;
     }
 }

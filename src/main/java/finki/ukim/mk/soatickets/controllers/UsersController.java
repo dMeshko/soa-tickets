@@ -1,7 +1,9 @@
 package finki.ukim.mk.soatickets.controllers;
 
+import finki.ukim.mk.soatickets.business.services.INotificationService;
 import finki.ukim.mk.soatickets.business.services.ISearchService;
 import finki.ukim.mk.soatickets.business.services.IUsersService;
+import finki.ukim.mk.soatickets.business.view.models.user.NotificationViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.RegisterUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UpdateUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
@@ -31,6 +33,9 @@ public class UsersController {
 
     @Autowired
     private ISearchService searchService;
+
+    @Autowired
+    private INotificationService notificationService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('admin')")
@@ -73,5 +78,11 @@ public class UsersController {
     @RequestMapping(value = "/search/{term}", method = RequestMethod.GET)
     public List<UserViewModel> search(@PathVariable String term) throws Exception {
         return searchService.searchUsers(term);
+    }
+
+    @RequestMapping(value = "/notifications", method = RequestMethod.GET)
+    public List<NotificationViewModel> getUserNotifications(Principal principal) throws Exception {
+        UserViewModel currentUser = usersService.findByEmail(principal.getName());
+        return notificationService.getAllForUser(currentUser.getId());
     }
 }
