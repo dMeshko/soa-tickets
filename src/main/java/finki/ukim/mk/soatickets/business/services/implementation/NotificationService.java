@@ -76,7 +76,7 @@ public class NotificationService implements INotificationService {
         String notificationContent = resolveNotificationContent(notificationType);
         String parsedNotificationContent = notificationContent.replace("{0}", userFrom.toString());
 
-        Notification notification = new Notification(notificationContent, userFrom, userTo);
+        Notification notification = new Notification(parsedNotificationContent, userFrom, userTo);
         notificationRepository.save(notification);
 
         return notification.getId();

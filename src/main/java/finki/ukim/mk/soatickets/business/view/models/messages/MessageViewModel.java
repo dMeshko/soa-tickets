@@ -7,10 +7,10 @@ import java.util.Date;
 public class MessageViewModel {
     private long id;
     private UserViewModel sender;
-    private UserViewModel reciever;
+    private UserViewModel receiver;
     private String subject;
     private String message;
-    private Date date;
+    private String date;
 
     public long getId() {
         return id;
@@ -28,12 +28,12 @@ public class MessageViewModel {
         this.sender = sender;
     }
 
-    public UserViewModel getReciever() {
-        return reciever;
+    public UserViewModel getReceiver() {
+        return receiver;
     }
 
-    public void setReciever(UserViewModel reciever) {
-        this.reciever = reciever;
+    public void setReceiver(UserViewModel receiver) {
+        this.receiver = receiver;
     }
 
     public String getSubject() {
@@ -52,11 +52,11 @@ public class MessageViewModel {
         this.message = message;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return this.date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

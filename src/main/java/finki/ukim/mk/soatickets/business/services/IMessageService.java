@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface IMessageService {
     List<MessageViewModel> getAllMessagesForSender(long senderId);
-    List<MessageViewModel> getAllMessagesForReciever(long recieverId);
+    List<MessageViewModel> getAllMessagesForReceiver(long receiverId);
     Long create(CreateMessageViewModel message) throws Exception;
 }

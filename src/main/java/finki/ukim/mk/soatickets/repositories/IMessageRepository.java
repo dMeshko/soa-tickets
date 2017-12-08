@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IMessageRepository extends CrudRepository<Message, Long> {
     public List<Message> getAllBySenderId(long senderId);
-    public List<Message> getAllByRecieverId(long recieverId);
+    public List<Message> getAllByReceiverId(long receiverId);
 }

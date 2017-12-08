@@ -4,10 +4,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CreateMessageViewModel {
-    @NotNull
     private long senderId;
     @NotNull
-    private long recieverId;
+    private long receiverId;
     @NotNull
     @Size(min = 5)
     private String subject;
@@ -23,12 +22,12 @@ public class CreateMessageViewModel {
         this.senderId = senderId;
     }
 
-    public long getRecieverId() {
-        return recieverId;
+    public long getReceiverId() {
+        return receiverId;
     }
 
-    public void setRecieverId(long recieverId) {
-        this.recieverId = recieverId;
+    public void setReceiverId(long receiverId) {
+        this.receiverId = receiverId;
     }
 
     public String getSubject() {

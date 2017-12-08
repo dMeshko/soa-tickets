@@ -185,8 +185,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Message> sendMessages;
 
-    @OneToMany(mappedBy = "reciever", cascade = CascadeType.ALL)
-    private List<Message> recievedMessages;
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private List<Message> receivedMessages;
 
     public List<Post> getPosts() {
         return posts;
@@ -204,4 +204,19 @@ public class User extends BaseEntity {
         this.receivedNotifications = receivedNotifications;
     }
 
+    public List<Message> getSendMessages() {
+        return sendMessages;
+    }
+
+    public void setSendMessages(List<Message> sendMessages) {
+        this.sendMessages = sendMessages;
+    }
+
+    public List<Message> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<Message> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
 }

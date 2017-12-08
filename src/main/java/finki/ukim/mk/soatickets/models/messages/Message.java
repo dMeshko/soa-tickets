@@ -13,17 +13,17 @@ public class Message extends BaseEntity {
     @JoinColumn(name="sender_id", nullable = false)
     private User sender;
     @ManyToOne
-    @JoinColumn(name = "reciever_id", nullable = false)
-    private User reciever;
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private User receiver;
     private String subject;
     private String message;
     private Date date;
 
     public Message() { this.date = new Date(); }
 
-    public Message(User sender, User reciever, String subject, String message) {
+    public Message(User sender, User receiver, String subject, String message) {
         this.sender = sender;
-        this.reciever = reciever;
+        this.receiver = receiver;
         this.subject = subject;
         this.message = message;
         this.date = new Date();
@@ -37,12 +37,12 @@ public class Message extends BaseEntity {
         this.sender = sender;
     }
 
-    public User getReciever() {
-        return reciever;
+    public User getReceiver() {
+        return receiver;
     }
 
-    public void setReciever(User reciever) {
-        this.reciever = reciever;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public String getSubject() {
