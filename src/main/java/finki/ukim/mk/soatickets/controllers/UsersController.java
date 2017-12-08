@@ -81,6 +81,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/notifications", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('user')")
     public List<NotificationViewModel> getUserNotifications(Principal principal) throws Exception {
         UserViewModel currentUser = usersService.findByEmail(principal.getName());
         return notificationService.getAllForUser(currentUser.getId());
