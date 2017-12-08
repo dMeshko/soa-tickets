@@ -27,6 +27,8 @@ public class Notification extends BaseEntity {
 
     private Date createdAt;
 
+    protected Notification() { }
+
     public Notification(String content, User userFrom, User userTo) {
         this.content = content;
         this.userFrom = userFrom;

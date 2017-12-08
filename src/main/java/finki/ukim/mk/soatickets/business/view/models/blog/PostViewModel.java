@@ -11,7 +11,7 @@ public class PostViewModel {
     private String title;
     private String content;
     private LookupViewModel<Long> author;
-    private Date createdAt;
+    private String createdAt;
 
     public String getTitle() {
         return title;
@@ -37,11 +37,11 @@ public class PostViewModel {
         this.author = author;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }

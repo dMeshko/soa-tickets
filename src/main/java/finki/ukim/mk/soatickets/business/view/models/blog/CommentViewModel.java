@@ -11,7 +11,7 @@ public class CommentViewModel {
     private String content;
     private LookupViewModel<Long> author;
     private LookupViewModel<Long> post;
-    private Date createdAt;
+    private String createdAt;
 
     public String getContent() {
         return content;
@@ -37,11 +37,11 @@ public class CommentViewModel {
         this.post = post;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }

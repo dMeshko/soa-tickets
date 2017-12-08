@@ -1,5 +1,6 @@
 package finki.ukim.mk.soatickets.business.services;
 
+import finki.ukim.mk.soatickets.business.view.models.user.NotificationType;
 import finki.ukim.mk.soatickets.business.view.models.user.NotificationViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
 
@@ -10,4 +11,5 @@ import java.util.List;
  */
 public interface INotificationService {
     List<NotificationViewModel> getAllForUser(long userId) throws Exception;
+    long sendNotification(long userFromId, long userToId, NotificationType notificationType) throws Exception;
 }

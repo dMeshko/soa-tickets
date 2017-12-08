@@ -52,7 +52,7 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Object register(@Valid CreatePostViewModel post, BindingResult bindingResult, Principal principal) throws Exception {
+    public Object addPost(@Valid CreatePostViewModel post, BindingResult bindingResult, Principal principal) throws Exception {
         if (bindingResult.hasErrors())
             return ErrorMessageHandler.ParseErrors(bindingResult.getFieldErrors());
 
@@ -63,7 +63,7 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Long delete(@PathVariable Long id) throws Exception {
+    public Long deletePost(@PathVariable Long id) throws Exception {
         return blogService.deletePost(id);
     }
 

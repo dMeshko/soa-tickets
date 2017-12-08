@@ -1,11 +1,13 @@
 package finki.ukim.mk.soatickets.business.services.implementation;
 
 import finki.ukim.mk.soatickets.business.services.IBlogService;
+import finki.ukim.mk.soatickets.business.services.INotificationService;
 import finki.ukim.mk.soatickets.business.view.models.LookupViewModel;
 import finki.ukim.mk.soatickets.business.view.models.blog.AddCommentViewModel;
 import finki.ukim.mk.soatickets.business.view.models.blog.CommentViewModel;
 import finki.ukim.mk.soatickets.business.view.models.blog.CreatePostViewModel;
 import finki.ukim.mk.soatickets.business.view.models.blog.PostViewModel;
+import finki.ukim.mk.soatickets.business.view.models.user.NotificationType;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
 import finki.ukim.mk.soatickets.models.blog.Comment;
 import finki.ukim.mk.soatickets.models.blog.Post;
@@ -17,6 +19,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +39,9 @@ public class BlogService implements IBlogService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private INotificationService notificationService;
+
     private ModelMapper modelMapper;
 
     public BlogService(){
@@ -43,12 +50,15 @@ public class BlogService implements IBlogService {
 
     @Override
     public List<PostViewModel> getAllPosts() {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         List<PostViewModel> result = new ArrayList<>();
         for (Post post : postRepository.findAll())
         {
             PostViewModel postViewModel = modelMapper.map(post, PostViewModel.class);
             LookupViewModel<Long> authorViewModel = new LookupViewModel<>(post.getAuthor().getId(), post.getAuthor().toString());
             postViewModel.setAuthor(authorViewModel);
+            postViewModel.setCreatedAt(dateFormat.format(post.getCreatedAt()));
             result.add(postViewModel);
         }
 
@@ -61,11 +71,13 @@ public class BlogService implements IBlogService {
         if (user == null)
             throw new Exception("User not found!");
 
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         List<PostViewModel> result = new ArrayList<>();
         for(Post post : user.getPosts()){
             PostViewModel postViewModel = modelMapper.map(post, PostViewModel.class);
             LookupViewModel<Long> authorViewModel = new LookupViewModel<>(post.getAuthor().getId(), post.getAuthor().toString());
             postViewModel.setAuthor(authorViewModel);
+            postViewModel.setCreatedAt(dateFormat.format(post.getCreatedAt()));
             result.add(postViewModel);
         }
 
@@ -107,6 +119,8 @@ public class BlogService implements IBlogService {
         Comment comment = new Comment(commentViewModel.getContent(), user, post);
         commentRepository.save(comment);
 
+        notificationService.sendNotification(user.getId(), post.getAuthor().getId(), NotificationType.Comment);
+
         return comment.getId();
     }
 
@@ -128,6 +142,7 @@ public class BlogService implements IBlogService {
 
         LookupViewModel<Long> postViewModel = new LookupViewModel<>(post.getAuthor().getId(), post.getAuthor().toString());
 
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         List<CommentViewModel> result = new ArrayList<>();
         for (Comment comment : post.getComments()){
             CommentViewModel commentViewModel = modelMapper.map(post, CommentViewModel.class);
@@ -135,6 +150,8 @@ public class BlogService implements IBlogService {
             commentViewModel.setAuthor(authorViewModel);
 
             commentViewModel.setPost(postViewModel);
+
+            commentViewModel.setCreatedAt(dateFormat.format(comment.getCreatedAt()));
 
             result.add(commentViewModel);
         }
