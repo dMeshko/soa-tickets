@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class EventService implements IEventService {
+public class  EventService implements IEventService {
 
     @Autowired
     private IEventRepository eventRepository;

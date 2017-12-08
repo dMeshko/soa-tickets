@@ -2,6 +2,7 @@ package finki.ukim.mk.soatickets.models.user;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.events.Event;
+import finki.ukim.mk.soatickets.models.messages.Message;
 import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
 import finki.ukim.mk.soatickets.models.tickets.Invoice;
 import jdk.nashorn.internal.ir.annotations.Ignore;
@@ -167,4 +168,10 @@ public class User extends BaseEntity {
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<Message> sendMessages;
+
+    @OneToMany(mappedBy = "reciever", cascade = CascadeType.ALL)
+    private List<Message> recievedMessages;
 }
