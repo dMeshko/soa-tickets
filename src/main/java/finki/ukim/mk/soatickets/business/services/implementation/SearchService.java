@@ -1,8 +1,10 @@
 package finki.ukim.mk.soatickets.business.services.implementation;
 
 import finki.ukim.mk.soatickets.business.services.ISearchService;
+import finki.ukim.mk.soatickets.business.view.models.blog.PostViewModel;
 import finki.ukim.mk.soatickets.business.view.models.events.EventViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
+import finki.ukim.mk.soatickets.models.blog.Post;
 import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.user.User;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -96,5 +98,31 @@ public class SearchService implements ISearchService {
         }
 
         return mappedUsersList;
+    }
+
+    @Override
+    public List<PostViewModel> searchPosts(String searchTerm) {
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Post.class).get();
+        Query luceneQuery = qb.keyword().fuzzy().withEditDistanceUpTo(2).withPrefixLength(1).onFields("title", "content")
+                .matching(searchTerm).createQuery();
+
+        javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Post.class);
+
+        // execute search
+
+        List<Post> postsList = null;
+        List<PostViewModel> mappedPostsList = new ArrayList<>();
+        try {
+            postsList = jpaQuery.getResultList();
+            for (Post post : postsList){
+                mappedPostsList.add(modelMapper.map(post, PostViewModel.class));
+            }
+        } catch (NoResultException nre) {
+            ;// do nothing
+            throw nre;
+        }
+
+        return mappedPostsList;
     }
 }
