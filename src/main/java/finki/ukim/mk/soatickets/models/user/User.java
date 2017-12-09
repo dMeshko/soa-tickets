@@ -4,6 +4,7 @@ import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.blog.Post;
 import finki.ukim.mk.soatickets.models.events.Event;
 import finki.ukim.mk.soatickets.models.messages.Message;
+import finki.ukim.mk.soatickets.models.support.SupportTicket;
 import finki.ukim.mk.soatickets.models.tickets.BoughtTicket;
 import finki.ukim.mk.soatickets.models.tickets.Invoice;
 import jdk.nashorn.internal.ir.annotations.Ignore;
@@ -55,6 +56,15 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "userTo", cascade = CascadeType.ALL)
     private List<Notification> receivedNotifications;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<SupportTicket> supportTickets;
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<Message> sendMessages;
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private List<Message> receivedMessages;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -69,6 +79,9 @@ public class User extends BaseEntity {
         this.roles = new ArrayList<>();
         this.posts = new ArrayList<>();
         this.receivedNotifications = new ArrayList<>();
+        this.supportTickets = new ArrayList<>();
+        this.sendMessages = new ArrayList<>();
+        this.receivedMessages = new ArrayList<>();
     }
 
     public User(String firstName, String lastName, String email, String password, String phoneNumber){
@@ -83,6 +96,9 @@ public class User extends BaseEntity {
         this.roles = new ArrayList<>();
         this.posts = new ArrayList<>();
         this.receivedNotifications = new ArrayList<>();
+        this.supportTickets = new ArrayList<>();
+        this.sendMessages = new ArrayList<>();
+        this.receivedMessages = new ArrayList<>();
     }
 
     @Override
@@ -182,12 +198,6 @@ public class User extends BaseEntity {
         this.invoices = invoices;
     }
 
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    private List<Message> sendMessages;
-
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-    private List<Message> receivedMessages;
-
     public List<Post> getPosts() {
         return posts;
     }
@@ -218,5 +228,13 @@ public class User extends BaseEntity {
 
     public void setReceivedMessages(List<Message> receivedMessages) {
         this.receivedMessages = receivedMessages;
+    }
+
+    public List<SupportTicket> getSupportTickets() {
+        return supportTickets;
+    }
+
+    public void setSupportTickets(List<SupportTicket> supportTickets) {
+        this.supportTickets = supportTickets;
     }
 }
