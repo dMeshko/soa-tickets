@@ -2,7 +2,6 @@ package finki.ukim.mk.soatickets.models.blog;
 
 import finki.ukim.mk.soatickets.models.BaseEntity;
 import finki.ukim.mk.soatickets.models.user.User;
-import javafx.geometry.Pos;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
