@@ -19,4 +19,5 @@ public interface IBlogService {
     long addComment(AddCommentViewModel commentViewModel) throws Exception;
     long deleteComment(Long commentId) throws Exception;
     List<CommentViewModel> getAllCommentsForPost(long postId) throws Exception;
+
 }

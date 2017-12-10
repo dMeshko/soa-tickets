@@ -12,4 +12,5 @@ import java.util.List;
 public interface INotificationService {
     List<NotificationViewModel> getAllForUser(long userId) throws Exception;
     long sendNotification(long userFromId, long userToId, NotificationType notificationType) throws Exception;
+
 }

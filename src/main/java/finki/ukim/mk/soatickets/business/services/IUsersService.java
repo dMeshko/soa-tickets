@@ -16,4 +16,5 @@ public interface IUsersService {
     Long update(UpdateUserViewModel user);
     Long delete(Long userId) throws Exception;
     UserViewModel findByEmail(String email) throws Exception;
+    UserViewModel findByUsername(String username) throws Exception;
 }

@@ -114,6 +114,15 @@ public class UsersService implements IUsersService, UserDetailsService {
         return modelMapper.map(user, UserViewModel.class);
     }
 
+    @Override
+    public UserViewModel findByUsername(String username) throws Exception {
+        User user = userRepository.findByEmail(username);
+        if (user == null)
+            throw new Exception("The username does not exist!");
+
+        return modelMapper.map(user, UserViewModel.class);
+    }
+
 
     /**
      * We are not supporting the concept of logging in by username, so that's why everywhere You're about to see username, we're using the email instead.
