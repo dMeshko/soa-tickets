@@ -23,8 +23,8 @@ services:
     labels:
       - "traefik.enable=false"
 
-  my-app:
-    image: user/soa-tickets
+  soa-ticekts:
+    image: akichukov/soa-tickets
     labels:
       - "traefik.port=8080"
       - "traefik.backend=soa-tickets"
