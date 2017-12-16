@@ -24,4 +24,4 @@ nbdist/
 .nb-gradle/
 lucenesoa-ticketsindexes
 C:lucenesoa-ticketsindexes
-finki.ukim.mk.soatickets
+finki.ukim.mk.soatickets.*
