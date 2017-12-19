@@ -14,9 +14,9 @@ services:
   my-mysql:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD:
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: password
       MYSQL_DATABASE: soa_tickets
     volumes:
       - my-datavolume:/var/lib/mysql

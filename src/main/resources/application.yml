@@ -27,9 +27,9 @@ spring:
 
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
-  url: jdbc:mysql://my-mysql:3306/demo
-  username: dbuser
-  password: dbp4ss
+  url: jdbc:mysql://my-mysql:3306/soa_tickets
+  username: root
+  password: password
 
 spring.jpa:
   hibernate:
