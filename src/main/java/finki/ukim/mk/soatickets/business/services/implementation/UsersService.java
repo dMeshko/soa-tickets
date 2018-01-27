@@ -68,7 +68,8 @@ public class UsersService implements IUsersService, UserDetailsService {
 
     @Override
     public Long register(RegisterUserViewModel user) throws Exception {
-        if (userRepository.findByEmail(user.getEmail()) != null)
+        User userRepositoryByEmail = userRepository.findByEmail(user.getEmail());
+        if (userRepositoryByEmail != null)
             throw new Exception("User already exists!");
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
@@ -82,7 +83,8 @@ public class UsersService implements IUsersService, UserDetailsService {
 
         dboUser.addRole(standardUserRole);
 
-        return userRepository.save(dboUser).getId();
+        User savedUser = userRepository.save(dboUser);
+        return savedUser.getId();
     }
 
     @Override

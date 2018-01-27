@@ -73,7 +73,7 @@ public class User extends BaseEntity {
     )
     private List<Role> roles;
 
-    protected User(){
+    public User(){
         this.boughtTickets = new ArrayList<>();
         this.ownedEvents = new ArrayList<>();
         this.roles = new ArrayList<>();
