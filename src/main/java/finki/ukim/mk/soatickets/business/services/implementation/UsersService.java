@@ -48,8 +48,11 @@ public class UsersService implements IUsersService, UserDetailsService {
     @Override
     public List<UserViewModel> getAll() {
         List<UserViewModel> result = new ArrayList<>();
-        for (User user : userRepository.findAll())
-            result.add(modelMapper.map(user, UserViewModel.class));
+        Iterable<User> userRepositoryAll = userRepository.findAll();
+        for (User user : userRepositoryAll) {
+            UserViewModel userViewModel = modelMapper.map(user, UserViewModel.class);
+            result.add(userViewModel);
+        }
 
         return result;
     }
