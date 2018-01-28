@@ -41,7 +41,15 @@ public class InvoiceService implements IInvoiceService {
 
         List<InvoiceViewModel> mappedInvoices = new ArrayList<>();
         List<Invoice> userInvoices = user.getInvoices();
-        mappedInvoices.addAll(userInvoices.stream().map(invoice -> new InvoiceViewModel(user, invoice.getTicket(), invoice.getAmountPayed(), invoice.getPaymentMethod())).collect(Collectors.toList()));
+        mappedInvoices.addAll(
+          userInvoices.stream()
+            .map(invoice -> new InvoiceViewModel(
+              user,
+              invoice.getTicket(),
+              invoice.getAmountPayed(),
+              invoice.getPaymentMethod()))
+            .collect(Collectors.toList())
+        );
 
         return mappedInvoices;
     }
@@ -57,8 +65,8 @@ public class InvoiceService implements IInvoiceService {
             throw new Exception("Ticket not found!!");
 
         Invoice invoice = new Invoice(user, ticket, amountPayed, paymentMethod);
-        invoiceRepository.save(invoice);
+        Invoice savedInvoice = invoiceRepository.save(invoice);
 
-        return invoice.getId();
+        return savedInvoice.getId();
     }
 }

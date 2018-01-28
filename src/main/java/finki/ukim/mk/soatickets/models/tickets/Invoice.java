@@ -25,6 +25,8 @@ public class Invoice extends BaseEntity {
     @Enumerated(EnumType.ORDINAL)
     private PaymentMethod paymentMethod;
 
+    private Long id;
+
     protected Invoice(){ }
 
     public Invoice(User user, Ticket ticket, float amountPayed, PaymentMethod paymentMethod) {
@@ -32,6 +34,15 @@ public class Invoice extends BaseEntity {
         this.ticket = ticket;
         this.amountPayed = amountPayed;
         this.paymentMethod = paymentMethod;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
