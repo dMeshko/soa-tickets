@@ -27,6 +27,17 @@ public class Notification extends BaseEntity {
 
     private Date createdAt;
 
+    private Long id;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     protected Notification() { }
 
     public Notification(String content, User userFrom, User userTo) {

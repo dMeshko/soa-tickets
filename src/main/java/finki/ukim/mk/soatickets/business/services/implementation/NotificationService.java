@@ -68,17 +68,13 @@ public class NotificationService implements INotificationService {
         if (userTo == null)
             throw new Exception("Sender not found!");
 
-        Date date = new Date();
-
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
         String notificationContent = resolveNotificationContent(notificationType);
         String parsedNotificationContent = notificationContent.replace("{0}", userFrom.toString());
 
         Notification notification = new Notification(parsedNotificationContent, userFrom, userTo);
-        notificationRepository.save(notification);
+        Notification saveNotification = notificationRepository.save(notification);
 
-        return notification.getId();
+        return saveNotification.getId();
     }
 
     private String resolveNotificationContent(NotificationType notificationType) throws Exception {
