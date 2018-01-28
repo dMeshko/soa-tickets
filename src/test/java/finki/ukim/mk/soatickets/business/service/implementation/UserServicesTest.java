@@ -12,6 +12,9 @@ import org.mockito.Mock;
 
 import org.mockito.runners.MockitoJUnitRunner;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import finki.ukim.mk.soatickets.business.services.IUsersService;
@@ -47,6 +50,9 @@ public class UserServicesTest {
   @InjectMocks
   private IUsersService usersService = new UsersService();
 
+  @InjectMocks
+  private UserDetailsService detailsService = new UsersService();
+
   @Before
   public void setup() {
     // Given
@@ -71,13 +77,13 @@ public class UserServicesTest {
     newUser.setPassword("password");
     newUser.setActive(true);
     newUser.setId(Long.valueOf(1));
-    when(userRepository.save(newUser)).thenReturn(user);
+    when(userRepository.save(user)).thenReturn(user);
     when(userRepository.findByEmail("EMAIL")).thenReturn(user);
 
     Role standardUserRole = new Role("user");
     standardUserRole.setUsers(userList);
     when(roleRepository.findByName("user")).thenReturn(standardUserRole);
-    when(bCryptPasswordEncoder.encode("password" )).thenReturn("password");
+    when(bCryptPasswordEncoder.encode("password")).thenReturn("password");
   }
 
   @Test
@@ -126,15 +132,14 @@ public class UserServicesTest {
     // When
     try {
       userViewModel = usersService.getById(Long.valueOf(2));
-    }
-    finally {
+    } finally {
       // Then
       Assert.assertThat(userViewModel, Matchers.nullValue());
     }
   }
 
   @Test
-  public void shouldRegisterUser() throws  Exception {
+  public void shouldRegisterUser() throws Exception {
 
     // Given
     RegisterUserViewModel user = new RegisterUserViewModel();
@@ -166,15 +171,14 @@ public class UserServicesTest {
     // When
     try {
       register = usersService.register(user);
-    }
-    finally {
+    } finally {
       // Then
       Assert.assertThat(register, Matchers.nullValue());
     }
   }
 
   @Test
-  public void shouldUpdateTheUser(){
+  public void shouldUpdateTheUser() {
     // given
     UpdateUserViewModel user = new UpdateUserViewModel();
     user.setId(Long.valueOf(1));
@@ -191,4 +195,48 @@ public class UserServicesTest {
     Assert.assertThat(userId, Matchers.greaterThan(Long.valueOf(0)));
   }
 
+  @Test
+  public void shouldfindByEmail() throws Exception {
+
+    // Given
+    String email = "EMAIL";
+
+    // When
+    UserViewModel userViewModel = usersService.findByEmail(email);
+
+    // Then
+    Assert.assertThat(userViewModel, Matchers.notNullValue());
+  }
+
+  @Test(expected = Exception.class)
+  public void shouldNotFindByEmail() throws Exception {
+    // Given
+    String email = "popovam@outlook.com";
+    UserViewModel userViewModel = null;
+
+    // When
+    try {
+      userViewModel = usersService.findByEmail(email);
+    }
+    finally {
+      // Then
+      Assert.assertThat(userViewModel, Matchers.nullValue());
+    }
+  }
+
+  @Test(expected = UsernameNotFoundException.class)
+  public void shouldNotFindByUsername() throws UsernameNotFoundException {
+    // Given
+    String username = "marija popova";
+    UserDetails userDetails = null;
+
+    // When
+    try {
+       userDetails = detailsService.loadUserByUsername(username);
+    }
+    finally {
+      // Then
+      Assert.assertThat(userDetails, Matchers.nullValue());
+    }
+  }
 }
