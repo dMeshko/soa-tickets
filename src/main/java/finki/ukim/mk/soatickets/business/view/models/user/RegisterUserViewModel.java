@@ -25,6 +25,8 @@ public class RegisterUserViewModel {
     @NotEmpty @Size(min = 9, max = 9)
     private String phoneNumber;
 
+    private Long id;
+
     public String getFirstName() {
         return firstName;
     }
@@ -63,5 +65,13 @@ public class RegisterUserViewModel {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

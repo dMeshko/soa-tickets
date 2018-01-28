@@ -18,10 +18,10 @@ import finki.ukim.mk.soatickets.business.services.IUsersService;
 import finki.ukim.mk.soatickets.business.services.implementation.UsersService;
 
 import finki.ukim.mk.soatickets.business.view.models.user.RegisterUserViewModel;
+import finki.ukim.mk.soatickets.business.view.models.user.UpdateUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
+
 import static org.mockito.Mockito.when;
 
 import finki.ukim.mk.soatickets.models.user.Role;
@@ -57,17 +57,26 @@ public class UserServicesTest {
     user.setPhoneNumber("023354235");
     user.setPassword("password");
     user.setActive(true);
+    user.setId(Long.valueOf(1));
     List<User> userList = new ArrayList<>();
     userList.add(user);
     when(userRepository.findAll()).thenReturn(userList);
     when(userRepository.findOne(Long.valueOf(1))).thenReturn(user);
-    when(userRepository.save(user)).thenReturn(user);
+
+    User newUser = new User();
+    newUser.setFirstName("FIRST NAME");
+    newUser.setLastName("LAST NAME");
+    newUser.setEmail("popovam@outlook.com");
+    newUser.setPhoneNumber("023354235");
+    newUser.setPassword("password");
+    newUser.setActive(true);
+    newUser.setId(Long.valueOf(1));
+    when(userRepository.save(newUser)).thenReturn(user);
     when(userRepository.findByEmail("EMAIL")).thenReturn(user);
 
     Role standardUserRole = new Role("user");
     standardUserRole.setUsers(userList);
     when(roleRepository.findByName("user")).thenReturn(standardUserRole);
-
     when(bCryptPasswordEncoder.encode("password" )).thenReturn("password");
   }
 
@@ -128,13 +137,14 @@ public class UserServicesTest {
   public void shouldRegisterUser() throws  Exception {
 
     // Given
-    // Given
     RegisterUserViewModel user = new RegisterUserViewModel();
     user.setFirstName("FIRST NAME");
     user.setLastName("LAST NAME");
     user.setEmail("popovam@outlook.com");
     user.setPhoneNumber("023354235");
     user.setPassword("password");
+    user.setId(Long.valueOf(1));
+
     // When
     Long userId = usersService.register(user);
 
@@ -142,11 +152,43 @@ public class UserServicesTest {
     Assert.assertThat(userId, Matchers.greaterThan(Long.valueOf(0)));
   }
 
+  @Test(expected = Exception.class)
+  public void shouldGetExceptionWhenEmailIsAlreadyRegistered() throws Exception {
 
+    // Given
+    RegisterUserViewModel user = new RegisterUserViewModel();
+    user.setFirstName("FIRST NAME");
+    user.setLastName("LAST NAME");
+    user.setEmail("EMAIL");
+    user.setPhoneNumber("023354235");
+    user.setPassword("password");
+    Long register = null;
+    // When
+    try {
+      register = usersService.register(user);
+    }
+    finally {
+      // Then
+      Assert.assertThat(register, Matchers.nullValue());
+    }
+  }
 
+  @Test
+  public void shouldUpdateTheUser(){
+    // given
+    UpdateUserViewModel user = new UpdateUserViewModel();
+    user.setId(Long.valueOf(1));
+    user.setEmail("marija.popova@netcetera.com");
+    user.setFirstName("Marija");
+    user.setLastName("Popova");
+    user.setPassword("password");
+    user.setPhoneNumber("phonenumber");
 
+    // when
+    Long userId = usersService.update(user);
 
-
-
+    // Then
+    Assert.assertThat(userId, Matchers.greaterThan(Long.valueOf(0)));
+  }
 
 }

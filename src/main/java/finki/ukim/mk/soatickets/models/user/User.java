@@ -40,6 +40,8 @@ public class User extends BaseEntity {
     private String phoneNumber;
     private boolean isActive;
 
+    private Long id;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @IndexedEmbedded
     private List<Event> ownedEvents;
@@ -236,5 +238,14 @@ public class User extends BaseEntity {
 
     public void setSupportTickets(List<SupportTicket> supportTickets) {
         this.supportTickets = supportTickets;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
