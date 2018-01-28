@@ -29,6 +29,17 @@ public class Event extends BaseEntity {
     @Field
     private String location;
 
+    private Long id;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @DateBridge(resolution = Resolution.DAY)
     @Field(analyze = Analyze.NO, store = Store.YES)
     private Date date;

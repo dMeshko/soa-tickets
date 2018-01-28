@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class  EventService implements IEventService {
+public class EventService implements IEventService {
 
     @Autowired
     private IEventRepository eventRepository;
@@ -28,19 +28,20 @@ public class  EventService implements IEventService {
 
     private ModelMapper modelMapper;
 
-    public EventService() { modelMapper = new ModelMapper(); }
+    public EventService() {
+        modelMapper = new ModelMapper();
+    }
 
     @Override
     public List<EventViewModel> getAll() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         List<EventViewModel> result = new ArrayList<>();
-        for (Event event : eventRepository.findAll()){
+        for (Event event : eventRepository.findAll()) {
             EventViewModel viewModel = modelMapper.map(event, EventViewModel.class);
             viewModel.setDate(dateFormat.format(event.getDate()));
             result.add(viewModel);
         }
-
 
         return result;
     }
@@ -50,7 +51,7 @@ public class  EventService implements IEventService {
         Event result = eventRepository.findOne(eventId);
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        if(result == null) {
+        if (result == null) {
             throw new Exception("There is no such event!");
         }
         EventViewModel viewModel = modelMapper.map(result, EventViewModel.class);
@@ -62,18 +63,20 @@ public class  EventService implements IEventService {
     public Long create(CreateEventViewModel event) throws Exception {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date eventDate = dateFormat.parse(event.getDate());
-        if (eventDate.compareTo(new Date()) < 0)
+        if (eventDate.compareTo(new Date()) < 0) {
             throw new Exception("The event can't be in the past.");
+        }
 
         User owner = userRepository.findOne(event.getOwnerId());
-        if (owner == null)
+        if (owner == null) {
             throw new Exception("Owner not found!");
+        }
 
         Event eventDbo = new Event(owner,
-                                   event.getName(),
-                                   event.getDescription(),
-                                   event.getLocation(),
-                                   eventDate);
+          event.getName(),
+          event.getDescription(),
+          event.getLocation(),
+          eventDate);
         return eventRepository.save(eventDbo).getId();
     }
 
