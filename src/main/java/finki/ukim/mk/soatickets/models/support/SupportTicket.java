@@ -23,6 +23,17 @@ public class SupportTicket extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    private Long id;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     protected SupportTicket(){ }
 
     public SupportTicket(String content, User user) {
