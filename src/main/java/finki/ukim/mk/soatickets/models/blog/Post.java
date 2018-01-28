@@ -33,6 +33,17 @@ public class Post extends BaseEntity {
 
     private Date createdAt;
 
+    private Long id;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     protected Post(){
         comments = new ArrayList<>();
         createdAt = new Date();

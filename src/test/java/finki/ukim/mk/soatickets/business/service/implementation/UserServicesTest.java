@@ -4,7 +4,6 @@ import java.util.List;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,7 +23,7 @@ import finki.ukim.mk.soatickets.business.view.models.user.RegisterUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UpdateUserViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.UserViewModel;
 
-
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import finki.ukim.mk.soatickets.models.user.Role;
@@ -68,16 +67,7 @@ public class UserServicesTest {
     userList.add(user);
     when(userRepository.findAll()).thenReturn(userList);
     when(userRepository.findOne(Long.valueOf(1))).thenReturn(user);
-
-    User newUser = new User();
-    newUser.setFirstName("FIRST NAME");
-    newUser.setLastName("LAST NAME");
-    newUser.setEmail("popovam@outlook.com");
-    newUser.setPhoneNumber("023354235");
-    newUser.setPassword("password");
-    newUser.setActive(true);
-    newUser.setId(Long.valueOf(1));
-    when(userRepository.save(user)).thenReturn(user);
+    when(userRepository.save(any(User.class))).thenReturn(user);
     when(userRepository.findByEmail("EMAIL")).thenReturn(user);
 
     Role standardUserRole = new Role("user");

@@ -90,9 +90,9 @@ public class BlogService implements IBlogService {
             throw new Exception("User not found!");
 
         Post post = new Post(postViewModel.getTitle(), postViewModel.getContent(), user);
-        postRepository.save(post);
+        Post savedPost = postRepository.save(post);
 
-        return post.getId();
+        return savedPost.getId();
     }
 
     @Override
@@ -117,11 +117,11 @@ public class BlogService implements IBlogService {
             throw new Exception("Post not found!");
 
         Comment comment = new Comment(commentViewModel.getContent(), user, post);
-        commentRepository.save(comment);
+        Comment savedComment = commentRepository.save(comment);
 
         notificationService.sendNotification(user.getId(), post.getAuthor().getId(), NotificationType.Comment);
 
-        return comment.getId();
+        return savedComment.getId();
     }
 
     @Override

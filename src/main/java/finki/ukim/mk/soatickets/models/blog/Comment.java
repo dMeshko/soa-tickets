@@ -28,6 +28,8 @@ public class Comment extends BaseEntity {
 
     private Date createdAt;
 
+    private Long id;
+
     protected Comment(){ }
 
     public Comment(String content, User author, Post post) {
@@ -35,6 +37,15 @@ public class Comment extends BaseEntity {
         this.author = author;
         this.post = post;
         this.createdAt = new Date();
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContent() {
