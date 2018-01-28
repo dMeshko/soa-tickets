@@ -85,7 +85,6 @@ public class InvoiceServiceTest {
     user.setInvoices(invoices);
     userList.add(user);
 
-    when(userRepository.findAll()).thenReturn(userList);
     when(userRepository.findOne(Long.valueOf(1))).thenReturn(user);
     when(ticketRepository.findOne(Long.valueOf(2))).thenReturn(ticket);
     when(invoiceRepository.save(any(Invoice.class))).thenReturn(invoice);

@@ -26,7 +26,7 @@ public class MessageService implements IMessageService {
     public MessageService() { mapper = new ModelMapper(); }
 
     @Autowired
-    private IMessageRepository repository;
+    private IMessageRepository messageRepository;
 
     @Autowired
     private IUserRepository userRepository;
@@ -39,7 +39,7 @@ public class MessageService implements IMessageService {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         List<MessageViewModel> results = new ArrayList<>();
-        List<Message> messagesResults = repository.getAllBySenderId(senderId);
+        List<Message> messagesResults = messageRepository.getAllBySenderId(senderId);
         for(Message msg : messagesResults) {
             MessageViewModel messageViewModel = mapper.map(msg, MessageViewModel.class);
             messageViewModel.setDate(dateFormat.format(msg.getDate()));
@@ -54,7 +54,7 @@ public class MessageService implements IMessageService {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         List<MessageViewModel> results = new ArrayList<>();
-        List<Message> messagesResults = repository.getAllByReceiverId(receiverId);
+        List<Message> messagesResults = messageRepository.getAllByReceiverId(receiverId);
         for(Message msg : messagesResults) {
             MessageViewModel messageViewModel = mapper.map(msg, MessageViewModel.class);
             messageViewModel.setDate(dateFormat.format(msg.getDate()));
@@ -76,22 +76,18 @@ public class MessageService implements IMessageService {
             throw new Exception("Receiver not found");
         }
 
-        Message messageNew = new Message(sender,
-                receiver,
-                                         message.getSubject(),
-                                         message.getMessage());
+        Message messageNew = new Message(sender, receiver, message.getSubject(), message.getMessage());
 
-        repository.save(messageNew);
+        Message savedMessage = messageRepository.save(messageNew);
 
         notificationService.sendNotification(sender.getId(), receiver.getId(), NotificationType.Message);
 
-        return messageNew.getId();
+        return savedMessage.getId();
     }
 
-    public Long delete(long messageId) throws Exception {
-        Message messageItem = repository.findOne(messageId);
-        repository.delete(messageId);
-
-        return messageItem.getId();
+    @Override
+    public Long delete(long messageId) {
+        messageRepository.delete(messageId);
+        return messageId;
     }
 }

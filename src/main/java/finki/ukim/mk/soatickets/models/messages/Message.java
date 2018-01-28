@@ -19,6 +19,17 @@ public class Message extends BaseEntity {
     private String message;
     private Date date;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    private Long id;
+
     public Message() { this.date = new Date(); }
 
     public Message(User sender, User receiver, String subject, String message) {

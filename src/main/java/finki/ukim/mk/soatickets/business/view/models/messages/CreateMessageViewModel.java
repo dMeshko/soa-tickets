@@ -14,6 +14,11 @@ public class CreateMessageViewModel {
     @Size(min = 5)
     private String message;
 
+    private Long id;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     public long getSenderId() {
         return senderId;
     }

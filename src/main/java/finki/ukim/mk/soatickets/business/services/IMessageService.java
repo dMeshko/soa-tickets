@@ -10,4 +10,5 @@ public interface IMessageService {
     List<MessageViewModel> getAllMessagesForSender(long senderId);
     List<MessageViewModel> getAllMessagesForReceiver(long receiverId);
     Long create(CreateMessageViewModel message) throws Exception;
+    Long delete(long messageId);
 }
