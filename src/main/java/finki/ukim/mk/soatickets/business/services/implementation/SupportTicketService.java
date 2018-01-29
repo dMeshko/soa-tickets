@@ -46,9 +46,9 @@ public class SupportTicketService implements ISupportTicketService {
             throw new Exception("User not found!");
 
         SupportTicket supportTicket = new SupportTicket(content, user);
-        supportTicketRepository.save(supportTicket);
+        SupportTicket savedTicket = supportTicketRepository.save(supportTicket);
 
-        return supportTicket.getId();
+        return savedTicket.getId();
     }
 
     @Override
