@@ -3,6 +3,7 @@ package finki.ukim.mk.soatickets.controllers;
 import finki.ukim.mk.soatickets.business.services.IBlogService;
 import finki.ukim.mk.soatickets.business.services.ISearchService;
 import finki.ukim.mk.soatickets.business.services.IUsersService;
+import finki.ukim.mk.soatickets.business.view.models.blog.CreatePostViewModel;
 import finki.ukim.mk.soatickets.business.view.models.user.RegisterUserViewModel;
 import finki.ukim.mk.soatickets.models.blog.Comment;
 import finki.ukim.mk.soatickets.models.blog.Post;
@@ -10,21 +11,25 @@ import finki.ukim.mk.soatickets.models.user.User;
 import finki.ukim.mk.soatickets.repositories.ICommentRepository;
 import finki.ukim.mk.soatickets.repositories.IPostRepository;
 import finki.ukim.mk.soatickets.repositories.IUserRepository;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
@@ -34,9 +39,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
@@ -107,5 +111,43 @@ public class BlogControllerTest {
     public void shouldReturnAllPosts() throws Exception {
         mockMvc.perform(get("/api/blog/")).andExpect(status().isOk());
         verify(blogService, times(1)).getAllPosts();
+    }
+
+    @Test
+    public void shouldReturnAllCommentsForPost() throws Exception {
+        MvcResult results = mockMvc.perform(get("/api/blog/{id}/comment", 1)).andExpect(status().isOk()).andReturn();
+        verify(blogService, times(1)).getAllCommentsForPost(1);
+    }
+
+    @Test
+    public void shouldDeletePost() throws Exception {
+        mockMvc.perform(delete("/api/blog/{id}", 1)).andExpect(status().isOk());
+        verify(blogService, times(1)).deletePost(Long.valueOf(1));
+    }
+
+    @Test
+    public void shouldNotAllowDeleteComment() throws Exception {
+        mockMvc.perform(delete("/api/blog/{id]/comment", 1)).andExpect(status().is4xxClientError());
+        verify(blogService, times(0)).deleteComment(Long.valueOf(1));
+    }
+
+    @Test
+    public void shouldCreatePost() throws Exception {
+        CreatePostViewModel createPostViewModel = new CreatePostViewModel();
+        String json = new JSONObject().put("title", "Test")
+                                      .put("content", "text for test")
+                                      .put("author", "1").toString();
+
+        mockMvc.perform(post("/api/blog/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isOk());
+        verify(blogService, times(1)).addPost(createPostViewModel);
+    }
+
+    @Test
+    public void shouldGetAllPoststForComment() throws Exception {
+        mockMvc.perform(get("/api/blog/{id}/comment", 1)).andExpect(status().isOk());
+        verify(blogService, times(0)).getAllCommentsForPost(Long.valueOf(1));
     }
 }
